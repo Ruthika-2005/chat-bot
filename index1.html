@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AI FAQ Chatbot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #e9f0ff;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .chat-container {
+        width: 420px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .header {
+        background: #4a60ff;
+        color: white;
+        padding: 15px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .chat-box {
+        padding: 15px;
+        height: 400px;
+        overflow-y: auto;
+        background: #f5f8ff;
+    }
+
+    .msg {
+        max-width: 80%;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        line-height: 1.4;
+    }
+
+    .user {
+        background: #4a60ff;
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 2px;
+    }
+
+    .bot {
+        background: #ffffff;
+        border: 1px solid #dce3ff;
+        color: #333;
+        border-bottom-left-radius: 2px;
+    }
+
+    .input-area {
+        display: flex;
+        border-top: 1px solid #dce3ff;
+        padding: 10px;
+        background: white;
+    }
+
+    input {
+        flex: 1;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #cbd5ff;
+        outline: none;
+    }
+
+    button {
+        padding: 10px 15px;
+        margin-left: 8px;
+        background: #4a60ff;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    button:hover {
+        background: #3548d8;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+    <div class="header">College / Company FAQ Chatbot</div>
+
+    <div class="chat-box" id="chatBox"></div>
+
+    <div class="input-area">
+        <input type="text" id="userInput" placeholder="Type your question...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    // FAQ dataset
+    const faqData = {
+        "what courses are available": "We offer B.Tech, B.Sc, B.Com, MBA and Diploma programs.",
+        "how to contact college": "You can reach us at: 9876543210 or email: info@college.com",
+        "what are the office hours": "Office hours are 9:00 AM to 5:00 PM, Monday to Saturday.",
+        "what is the fee structure": "Fee varies by course. Please visit the office or our website for details.",
+        "how to apply for admission": "You can apply online through our admission portal or visit the campus.",
+        "where is the college located": "We are located near City Center, Main Highway Road.",
+        "what facilities are available": "We provide library, labs, transportation, sports, and WiFi campus.",
+        "what is attendance criteria": "Minimum 75% attendance is required for all students.",
+        "when will exams start": "Exam schedules will be announced on the official notice board and website."
+    };
+
+    function getBotReply(userText) {
+        userText = userText.toLowerCase();
+
+        // Find closest match
+        for (let key in faqData) {
+            if (userText.includes(key)) {
+                return faqData[key];
+            }
+        }
+        return "Sorry, I don't have an answer for that. Please contact admin office.";
+    }
+
+    function addMessage(text, sender) {
+        let chatBox = document.getElementById("chatBox");
+
+        let msg = document.createElement("div");
+        msg.classList.add("msg", sender);
+        msg.textContent = text;
+
+        chatBox.appendChild(msg);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function sendMessage() {
+        let inputField = document.getElementById("userInput");
+        let text = inputField.value.trim();
+
+        if (text === "") return;
+
+        addMessage(text, "user");
+        inputField.value = "";
+
+        setTimeout(() => {
+            let reply = getBotReply(text);
+            addMessage(reply, "bot");
+        }, 400);
+    }
+</script>
+
+</body>
+</html>
